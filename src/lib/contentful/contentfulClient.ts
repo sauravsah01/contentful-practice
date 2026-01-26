@@ -1,15 +1,15 @@
 import { createContentfulClient } from './Contentful'
 
-export function createClient() {
+export function createClient(useLivePreview?: boolean) {
   return {
     api: createContentfulClient({
-      accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN,
-      environment: process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT,
-      space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE,
+      accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_DELIVERY_ACCESS_TOKEN,
+      environment: process.env.NEXT_PUBLIC_CONTENTFUL_ENVIRONMENT,
+      space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID,
       preview: {
-        enable: process.env.NEXT_PUBLIC_CONTENTFUL_LIVE_PREVIEW === 'true',
+        enable: useLivePreview === true && process.env.NEXT_PUBLIC_CONTENTFUL_ENABLE_LIVE_PREVIEW === 'true',
         host: process.env.NEXT_PUBLIC_CONTENTFUL_PREVIEW_HOST,
-        token: process.env.NEXT_PUBLIC_CONTENTFUL_PREVIEW_TOKEN,
+        token: process.env.NEXT_PUBLIC_CONTENTFUL_PREVIEW_ACCESS_TOKEN,
       },
     }),
   }

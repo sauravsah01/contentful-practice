@@ -15,7 +15,7 @@ export const config = {
   ],
 }
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   let res = NextResponse.next()
 
   for (const middleware of middlewares) {

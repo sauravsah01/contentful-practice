@@ -1,0 +1,13 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always"
+  },
+  "editor.tabSize": 2,
+  "workbench.editor.customLabels.patterns": {
+    "**/layout.tsx": "${dirname}\\${filename}.${extname}",
+    "**/page.tsx": "${dirname}\\${filename}.${extname}",
+    "**/index.ts": "${dirname}\\{filename}.${extname}"
+  },
+}

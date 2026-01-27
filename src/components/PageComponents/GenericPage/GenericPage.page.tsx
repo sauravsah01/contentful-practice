@@ -1,6 +1,7 @@
 'use client'
 
-import { useContentfulLiveUpdates } from '@contentful/live-preview/react'
+import { useContentfulInspectorMode, useContentfulLiveUpdates } from '@contentful/live-preview/react'
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 
 type GenericPageProps = {
   data: any
@@ -9,23 +10,30 @@ type GenericPageProps = {
 const GenericPage = (props: GenericPageProps) => {
   const { data } = props
 
-  // const inspectorProps = useContentfulInspectorMode()
   const updatedData = useContentfulLiveUpdates(data)
-
-  console.log('data', data)
+  const inspectorProps = useContentfulInspectorMode({ entryId: updatedData.sys.id })
 
   if (!data) {
     return null
   }
 
   return (
-    <h1>
-      {/* {inspectorProps({
-        entryId: updatedData.sys.id,
-        fieldId: 'pageName',
-      })} */}
-      {updatedData.fields.pageName}
-    </h1>
+    <>
+      <h1
+        {...inspectorProps({
+          fieldId: 'pageName',
+        })}
+      >
+        {updatedData.fields.pageName}
+      </h1>
+      <div
+        {...inspectorProps({
+          fieldId: 'pageText',
+        })}
+      >
+        {documentToReactComponents(updatedData.fields.pageText)}
+      </div>
+    </>
   )
 }
 

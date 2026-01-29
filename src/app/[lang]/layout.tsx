@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { draftMode } from 'next/headers'
 import ContentfulPreviewProvider from '@/components/ContentfulPreviewProvider'
 import '../globals.css'
+import { ExitPreviewButton } from '@/components/ExitPreviewButton'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -21,15 +22,21 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode
+  params: { lang: string }
 }>) {
   const { isEnabled } = await draftMode()
+  const { lang } = await params
 
   return (
-    <html lang="en">
+    <html lang={lang}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ContentfulPreviewProvider isEnabled={isEnabled}>{children}</ContentfulPreviewProvider>
+        <ContentfulPreviewProvider isEnabled={isEnabled} locale={lang}>
+          {children}
+        </ContentfulPreviewProvider>
+        {isEnabled && <ExitPreviewButton />}
       </body>
     </html>
   )

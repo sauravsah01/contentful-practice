@@ -8,16 +8,18 @@ export async function GET(request: Request) {
   const secret = searchParams.get('secret')
   const url = searchParams.get('url')
   const contentType = searchParams.get('content-type')
+  const locale = searchParams.get('locale')
 
   const previewClient = createClient(true)
 
   // Check the secret and next parameters
   // This secret should only be known to this Route Handler and the CMS
-  if (secret != process.env.CONTENTFUL_PREVIEW_SECRET || !url || !contentType)
+  if (secret != process.env.CONTENTFUL_PREVIEW_SECRET || !url || !contentType || !locale)
     return new Response('Invalid secret or preview URL', { status: 401 })
 
   const response = await previewClient.api.find(contentType, {
     'fields.url': url,
+    locale,
     limit: 1,
   })
 
@@ -25,8 +27,6 @@ export async function GET(request: Request) {
 
   const draft = await draftMode()
   draft.enable()
-
-  console.log('should be true', draft.isEnabled)
 
   const item = response.data?.[0]
 
@@ -51,5 +51,5 @@ export async function GET(request: Request) {
     })
   }
 
-  redirect(entryUrl)
+  redirect(`/${locale}${entryUrl}`)
 }

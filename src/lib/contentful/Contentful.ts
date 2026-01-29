@@ -53,7 +53,6 @@ export class Contentful {
   async getEntryById(entryId: string): Promise<Result<Entry>> {
     try {
       const response = await this.client.getEntry(entryId)
-      console.log('here', JSON.stringify(response))
       return Result.success(response)
     } catch (error) {
       const traceId = crypto.randomUUID()

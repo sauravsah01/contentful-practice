@@ -10,8 +10,8 @@ type GenericPageProps = {
 const GenericPage = (props: GenericPageProps) => {
   const { data } = props
 
-  const updatedData = useContentfulLiveUpdates(data)
-  const inspectorProps = useContentfulInspectorMode({ entryId: updatedData.sys.id })
+  const liveData = useContentfulLiveUpdates(data)
+  const inspectorProps = useContentfulInspectorMode({ entryId: liveData.sys.id })
 
   if (!data) {
     return null
@@ -24,14 +24,14 @@ const GenericPage = (props: GenericPageProps) => {
           fieldId: 'pageName',
         })}
       >
-        {updatedData.fields.pageName}
+        {liveData.fields.pageName}
       </h1>
       <div
         {...inspectorProps({
           fieldId: 'pageText',
         })}
       >
-        {documentToReactComponents(updatedData.fields.pageText)}
+        {documentToReactComponents(liveData.fields.pageText)}
       </div>
     </>
   )

@@ -2,10 +2,10 @@ import GenericPage from '@/components/PageComponents/GenericPage/GenericPage.pag
 import getGenericPageData from '@/components/PageComponents/GenericPage/getGenericPage'
 import { notFound } from 'next/navigation'
 
-export default async function Page({ params, searchParams }: Core.Page<{ path: Array<string>; lang: string }>) {
+export default async function Page({ params }: Core.Page<{ path: Array<string>; lang: string }>) {
   const { lang, path } = await params
   const url = path?.length ? `/${path.join('/')}` : '/'
-  const result = await getGenericPageData(url)
+  const result = await getGenericPageData(url, lang)
 
   if (!result.ok || !result.data) {
     return notFound()

@@ -4,6 +4,8 @@ import { draftMode } from 'next/headers'
 import ContentfulPreviewProvider from '@/components/ContentfulPreviewProvider'
 import '../globals.css'
 import { ExitPreviewButton } from '@/components/ExitPreviewButton'
+import { GoogleTagManager } from '@next/third-parties/google'
+import { getGlobalSettingsData } from '@/lib/contentful/contentfulService'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,10 +31,13 @@ export default async function RootLayout({
 }>) {
   const { isEnabled } = await draftMode()
   const { lang } = await params
+  const { data: globalSettingsData } = await getGlobalSettingsData(lang)
+  const GTM_ID = (globalSettingsData?.fields?.gtmId as string) || ''
 
   return (
     <html lang={lang}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {GTM_ID && <GoogleTagManager gtmId={GTM_ID} />}
         <main id="main">
           <ContentfulPreviewProvider isEnabled={isEnabled} locale={lang}>
             {children}

@@ -1,31 +1,37 @@
 import Result from '@/lib/Result'
 import { createClient } from '@/lib/contentful/contentfulClient'
+import { TypeGlobalSettingsSkeleton } from '@/types'
 import { Entry } from 'contentful'
 import { cache } from 'react'
 
 const GLOBAL_SETTINGS_CONTENT_TYPE = 'globalSettings'
 
-export const getGlobalSettingsData = cache(async (locale?: string): Promise<Result<Entry>> => {
-  try {
-    const client = createClient()
-    const response = await client.api.find(GLOBAL_SETTINGS_CONTENT_TYPE, { limit: 1, ...(locale && { locale }) })
+export const getGlobalSettingsData = cache(
+  async (locale?: string): Promise<Result<Entry<TypeGlobalSettingsSkeleton>>> => {
+    try {
+      const client = createClient()
+      const response = await client.api.find<TypeGlobalSettingsSkeleton>(GLOBAL_SETTINGS_CONTENT_TYPE, {
+        limit: 1,
+        ...(locale && { locale }),
+      })
 
-    if (!response || response.error) {
-      return Result.fail('getGlobalSettingsData: No Items Found')
+      if (!response || response.error) {
+        return Result.fail('getGlobalSettingsData: No Items Found')
+      }
+
+      if (!response.data) {
+        return Result.fail('getGlobalSettingsData: No entry found')
+      }
+
+      const item = response.data?.[0]
+
+      return Result.success(item)
+    } catch (err) {
+      console.error('There is an error in getGlobalSettingsData query:', err)
+      return Result.fail('getGlobalSettingsData Query failed to fetch data')
     }
-
-    if (!response.data) {
-      return Result.fail('getGlobalSettingsData: No entry found')
-    }
-
-    const item = response.data?.[0]
-
-    return Result.success(item)
-  } catch (err) {
-    console.error('There is an error in getGlobalSettingsData query:', err)
-    return Result.fail('getGlobalSettingsData Query failed to fetch data')
-  }
-})
+  },
+)
 
 export const getSitemapPages = async (locale: string): Promise<Result<Entry[]>> => {
   // Add pages content type here

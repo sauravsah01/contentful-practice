@@ -2,6 +2,7 @@ import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleC
 
 export interface TypeGlobalSettingsFields {
     internalName?: EntryFieldTypes.Symbol;
+    gtmId?: EntryFieldTypes.Symbol;
     gaMeasurementId?: EntryFieldTypes.Symbol;
     mapsApiKey?: EntryFieldTypes.Symbol;
     pageTag?: EntryFieldTypes.Symbol;

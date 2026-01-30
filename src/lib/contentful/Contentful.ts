@@ -36,12 +36,12 @@ export class Contentful {
     })
   }
 
-  async find<T extends EntrySkeletonType>(
-    contentType: T['contentTypeId'],
+  async find<TSkeleton extends EntrySkeletonType>(
+    contentType: TSkeleton['contentTypeId'],
     query?: Record<string, any>,
-  ): Promise<Result<Entry[]>> {
+  ): Promise<Result<Entry<TSkeleton>[]>> {
     try {
-      const response = await this.client.getEntries({
+      const response = await this.client.getEntries<TSkeleton>({
         content_type: contentType,
         ...query,
       })

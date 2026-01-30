@@ -1,15 +1,18 @@
 import Result from '@/lib/Result'
 import { createClient } from '@/lib/contentful/contentfulClient'
+import { TypePageSkeleton } from '@/types'
+import { Entry } from 'contentful'
 import { draftMode } from 'next/headers'
+import { cache } from 'react'
 
-const PAGE_CONTENT_TYPE = 'page'
+const PAGE_CONTENT_TYPE: TypePageSkeleton['contentTypeId'] = 'page'
 
-export default async function getGenericPageData(url: string, locale?: string) {
+export const getGenericPageData = cache(async (url: string, locale?: string): Promise<Result<Entry>> => {
   const { isEnabled } = await draftMode()
 
   try {
     const client = isEnabled ? createClient(true) : createClient()
-    const response = await client.api.find(PAGE_CONTENT_TYPE, {
+    const response = await client.api.find<TypePageSkeleton>(PAGE_CONTENT_TYPE, {
       'fields.url': url,
       limit: 1,
       ...(locale && { locale }),
@@ -30,4 +33,4 @@ export default async function getGenericPageData(url: string, locale?: string) {
     console.error('There is an error in getGenericPage query:', err)
     return Result.fail('getGenericPage Query failed to fetch data')
   }
-}
+})

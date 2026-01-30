@@ -33,10 +33,12 @@ export default async function RootLayout({
   return (
     <html lang={lang}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ContentfulPreviewProvider isEnabled={isEnabled} locale={lang}>
-          {children}
-        </ContentfulPreviewProvider>
-        {isEnabled && <ExitPreviewButton />}
+        <main id="main">
+          <ContentfulPreviewProvider isEnabled={isEnabled} locale={lang}>
+            {children}
+          </ContentfulPreviewProvider>
+          {isEnabled && <ExitPreviewButton />}
+        </main>
       </body>
     </html>
   )

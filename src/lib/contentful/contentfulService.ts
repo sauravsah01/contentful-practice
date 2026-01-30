@@ -1,77 +1,58 @@
-// import Result from '@/lib/Result'
-// import { createClient } from '@/lib/contentful/contentfulClient'
-// import { GetEntryOptions } from '@/lib/contentful/Contentful'
+import Result from '@/lib/Result'
+import { createClient } from '@/lib/contentful/contentfulClient'
+import { Entry } from 'contentful'
+import { cache } from 'react'
 
-// export async function getEntries<T>(options: GetEntryOptions): Promise<Result<T[]>> {
-//   const result = await createClient().api.find(options)
+const GLOBAL_SETTINGS_CONTENT_TYPE = 'globalSettings'
 
-//   if (!result.ok) {
-//     return Result.from(result)
-//   }
+export const getGlobalSettingsData = cache(async (locale?: string): Promise<Result<Entry>> => {
+  try {
+    const client = createClient()
+    const response = await client.api.find(GLOBAL_SETTINGS_CONTENT_TYPE, { limit: 1, ...(locale && { locale }) })
 
-//   if (!result.data || result.data.length < 1) {
-//     return Result.fail('Not Found')
-//   }
+    if (!response || response.error) {
+      return Result.fail('getGlobalSettingsData: No Items Found')
+    }
 
-//   return Result.success<T[]>(result.data)
-// }
+    if (!response.data) {
+      return Result.fail('getGlobalSettingsData: No entry found')
+    }
 
-// export async function getEntrySingle<T>(options: GetEntryOptions): Promise<Result<T>> {
-//   const result = await createClient().api.find<T>(options)
+    const item = response.data?.[0]
 
-//   if (!result.ok) {
-//     return Result.from(result)
-//   }
+    return Result.success(item)
+  } catch (err) {
+    console.error('There is an error in getGlobalSettingsData query:', err)
+    return Result.fail('getGlobalSettingsData Query failed to fetch data')
+  }
+})
 
-//   if (!result.data || result.data.length < 1) {
-//     return Result.fail('Not Found')
-//   }
+export const getSitemapPages = async (locale: string): Promise<Result<Entry[]>> => {
+  // Add pages content type here
+  const ALL_PAGES_CONTENT_TYPE = ['page']
 
-//   return Result.success<T>(result.data.shift())
-// }
+  if (!ALL_PAGES_CONTENT_TYPE || ALL_PAGES_CONTENT_TYPE.length === 0) {
+    return Result.fail('No content types defined for all pages')
+  }
 
-// export async function getEntryByUrl<T>(
-//   url: string,
-//   contentType: string,
-//   language?: string,
-// ): Promise<Result<T>> {
-//   return getEntrySingle<T>({
-//     contentType,
-//     query: {
+  try {
+    const pages: Entry[] = []
 
-//     }
-//   })
-// }
+    for (const contentType of ALL_PAGES_CONTENT_TYPE) {
+      const client = createClient()
+      const response = await client.api.find(contentType, { ...(locale && { locale }) })
 
-// export const getSitemapPages = async (language: string): Promise<Result<Page[]>> => {
-//   // Add pages content type here
-//   const ALL_PAGES_CONTENT_TYPE = ['page']
+      if (response.ok && response.data) {
+        const visiblePages = response.data.filter(
+          (page) => (page.fields?.seoMetadata as Entry)?.fields?.hidePageFromSitemap !== true,
+        )
 
-//   if (!ALL_PAGES_CONTENT_TYPE || ALL_PAGES_CONTENT_TYPE.length === 0) {
-//     return Result.fail('No content types defined for all pages')
-//   }
+        pages.push(...visiblePages)
+      }
+    }
 
-//   try {
-//     const pages: Page[] = []
-
-//     for (const contentType of ALL_PAGES_CONTENT_TYPE) {
-//       const result = await getEntries<Page>({
-//         contentType,
-//         builder: (query) =>
-//           query.where('search.disable_search_indexing', QueryOperation.NOT_EQUALS, true).addParams({
-//             include_fallback: true,
-//             include_system_fields: true,
-//             locale: language || '',
-//           }),
-//       })
-
-//       if (result.ok && result.data) {
-//         pages.push(...result.data)
-//       }
-//     }
-
-//     return Result.success(pages)
-//   } catch (error) {
-//     return Result.fail(`Failed to fetch pages\r\n ${JSON.stringify(error, null, 2)}`)
-//   }
-// }
+    return Result.success(pages)
+  } catch (error) {
+    return Result.fail(`Failed to fetch pages\r\n ${JSON.stringify(error, null, 2)}`)
+  }
+}

@@ -4,14 +4,15 @@ import { useContentfulInspectorMode, useContentfulLiveUpdates } from '@contentfu
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 
 type GenericPageProps = {
-  data: any
+  entryData: any
+  useLivePreview?: boolean
 }
 
 const GenericPage = (props: GenericPageProps) => {
-  const { data } = props
+  const { entryData, useLivePreview } = props
 
-  const liveData = useContentfulLiveUpdates(data)
-  const inspectorProps = useContentfulInspectorMode({ entryId: liveData.sys.id })
+  const data = useLivePreview ? useContentfulLiveUpdates(entryData) : entryData
+  const inspectorProps = useContentfulInspectorMode({ entryId: data.sys.id })
 
   if (!data) {
     return null
@@ -24,14 +25,14 @@ const GenericPage = (props: GenericPageProps) => {
           fieldId: 'pageName',
         })}
       >
-        {liveData.fields.pageName}
+        {data.fields.pageName}
       </h1>
       <div
         {...inspectorProps({
           fieldId: 'pageText',
         })}
       >
-        {documentToReactComponents(liveData.fields.pageText)}
+        {documentToReactComponents(data.fields.pageText)}
       </div>
     </>
   )

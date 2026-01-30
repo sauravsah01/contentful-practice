@@ -2,6 +2,7 @@ import GenericPage from '@/components/PageComponents/GenericPage/GenericPage.pag
 import { getGenericPageData } from '@/components/PageComponents/GenericPage/getGenericPage'
 import { getGlobalSettingsData } from '@/lib/contentful/contentfulService'
 import { createMetadata } from '@/utils'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 
 // Block paths that contain a . to prevent invalid requests like /com.chrome.devtools.json
@@ -21,6 +22,7 @@ export async function generateMetadata({ params }: Core.Page<{ path: Array<strin
 }
 
 export default async function Page({ params }: Core.Page<{ path: Array<string>; lang: string }>) {
+  const { isEnabled } = await draftMode()
   const { lang, path } = await params
   const url = path?.length ? `/${path.join('/')}` : '/'
 
@@ -34,5 +36,5 @@ export default async function Page({ params }: Core.Page<{ path: Array<string>; 
     return notFound()
   }
 
-  return <GenericPage data={result.data} />
+  return <GenericPage entryData={result.data} useLivePreview={isEnabled} />
 }

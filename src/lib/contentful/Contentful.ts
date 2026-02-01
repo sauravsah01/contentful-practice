@@ -1,4 +1,4 @@
-import { createClient, ContentfulClientApi, Entry } from 'contentful'
+import { createClient, ContentfulClientApi, Entry, EntrySkeletonType } from 'contentful'
 import Result from '@/lib/Result'
 import logger from '@/lib/logger'
 
@@ -36,9 +36,12 @@ export class Contentful {
     })
   }
 
-  async find(contentType: string, query?: Record<string, any>): Promise<Result<Entry[]>> {
+  async find<TSkeleton extends EntrySkeletonType>(
+    contentType: TSkeleton['contentTypeId'],
+    query?: Record<string, any>,
+  ): Promise<Result<Entry<TSkeleton>[]>> {
     try {
-      const response = await this.client.getEntries({
+      const response = await this.client.getEntries<TSkeleton>({
         content_type: contentType,
         ...query,
       })
@@ -46,18 +49,6 @@ export class Contentful {
     } catch (error) {
       const traceId = crypto.randomUUID()
       logger.error(error, `Contentful (Trace ID '${traceId}'): Query for content type '${contentType}'`)
-      return Result.fail('Woops', { traceId })
-    }
-  }
-
-  async getEntryById(entryId: string): Promise<Result<Entry>> {
-    try {
-      const response = await this.client.getEntry(entryId)
-      console.log('here', JSON.stringify(response))
-      return Result.success(response)
-    } catch (error) {
-      const traceId = crypto.randomUUID()
-      logger.error(error, `Contentful (Trace ID '${traceId}'): Query for content entry ID '${entryId}'`)
       return Result.fail('Woops', { traceId })
     }
   }

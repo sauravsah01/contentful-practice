@@ -1,22 +1,40 @@
 import GenericPage from '@/components/PageComponents/GenericPage/GenericPage.page'
-import getGenericPageData from '@/components/PageComponents/GenericPage/getGenericPage'
+import { getGenericPageData } from '@/components/PageComponents/GenericPage/getGenericPage'
+import { getGlobalSettingsData } from '@/lib/contentful/contentfulService'
+import { createMetadata } from '@/utils'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 
-export default async function Page({ params, searchParams }: Core.Page<{ path: Array<string>; lang: string }>) {
+// Block paths that contain a . to prevent invalid requests like /com.chrome.devtools.json
+const BLOCK_PATH_REGEX = /\./
+
+export async function generateMetadata({ params }: Core.Page<{ path: Array<string>; lang: string }>) {
   const { lang, path } = await params
   const url = path?.length ? `/${path.join('/')}` : '/'
-  const result = await getGenericPageData(url)
+
+  if (BLOCK_PATH_REGEX.test(url)) {
+    return null
+  }
+
+  const { data } = await getGenericPageData(url, lang)
+  const { data: globalSettingsData } = await getGlobalSettingsData(lang)
+  return createMetadata(data, globalSettingsData)
+}
+
+export default async function Page({ params }: Core.Page<{ path: Array<string>; lang: string }>) {
+  const { isEnabled } = await draftMode()
+  const { lang, path } = await params
+  const url = path?.length ? `/${path.join('/')}` : '/'
+
+  if (BLOCK_PATH_REGEX.test(url)) {
+    return null
+  }
+
+  const result = await getGenericPageData(url, lang)
 
   if (!result.ok || !result.data) {
     return notFound()
   }
 
-  return <GenericPage data={result.data} />
+  return <GenericPage entryData={result.data} useLivePreview={isEnabled} />
 }
-
-// export async function generateMetadata({ params, searchParams }: Core.Page<{ path: Array<string>; lang: string }>) {
-//   const { lang } = await params;
-//   const { data } = await getPageData({ params, searchParams });
-//   const { data: globalSettingsData } = await getGlobalSettingsData(lang);
-//   return createMetadata(data, globalSettingsData);
-// }

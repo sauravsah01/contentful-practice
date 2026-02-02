@@ -1,11 +1,10 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { draftMode } from 'next/headers'
-import ContentfulPreviewProvider from '@/components/ContentfulPreviewProvider'
-import '../globals.css'
-import { ExitPreviewButton } from '@/components/ExitPreviewButton'
 import { GoogleTagManager } from '@next/third-parties/google'
 import { getGlobalSettingsData } from '@/lib/contentful/contentfulService'
+import { ContentfulPreviewProvider, ExitPreviewButton } from '@/components/Global/LivePreview'
+import '../globals.css'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

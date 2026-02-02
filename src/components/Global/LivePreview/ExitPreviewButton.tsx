@@ -1,4 +1,4 @@
-export function ExitPreviewButton() {
+export default function ExitPreviewButton() {
   return (
     <a
       href="/api/exit-preview"

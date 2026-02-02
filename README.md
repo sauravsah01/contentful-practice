@@ -25,4 +25,5 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 To auto-generate types for content types in contentful, you can run this command
 
 npx cf-content-types-generator -s {space_id} -t {content_management_token} -X -o ./src/types
+
 For more options, check the README at https://github.com/contentful-userland/cf-content-types-generator

@@ -11,8 +11,9 @@ type GenericPageProps = {
 const GenericPage = (props: GenericPageProps) => {
   const { entryData, useLivePreview } = props
 
-  const data = useLivePreview ? useContentfulLiveUpdates(entryData) : entryData
-  const inspectorProps = useContentfulInspectorMode({ entryId: data.sys.id })
+  const inspectorProps = useContentfulInspectorMode({ entryId: entryData.sys.id })
+  const liveData = useContentfulLiveUpdates(useLivePreview ? entryData : null)
+  const data = liveData ?? entryData
 
   if (!data) {
     return null

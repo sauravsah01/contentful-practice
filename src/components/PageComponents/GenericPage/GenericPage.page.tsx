@@ -1,7 +1,8 @@
 'use client'
 
-import { useContentfulInspectorMode, useContentfulLiveUpdates } from '@contentful/live-preview/react'
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
+import RenderBlock from '@/components/Global/ContentBlocks/RenderBlock'
+import { useContentfulLiveUpdates } from '@contentful/live-preview/react'
+import { Fragment } from 'react/jsx-runtime'
 
 type GenericPageProps = {
   entryData: any
@@ -11,30 +12,19 @@ type GenericPageProps = {
 const GenericPage = (props: GenericPageProps) => {
   const { entryData, useLivePreview } = props
 
-  const inspectorProps = useContentfulInspectorMode({ entryId: entryData.sys.id })
   const liveData = useContentfulLiveUpdates(useLivePreview ? entryData : null)
   const data = liveData ?? entryData
 
   if (!data) {
     return null
   }
+  const { pageComponents } = data.fields
 
   return (
     <>
-      <h1
-        {...inspectorProps({
-          fieldId: 'pageName',
-        })}
-      >
-        {data.fields.pageName}
-      </h1>
-      <div
-        {...inspectorProps({
-          fieldId: 'pageText',
-        })}
-      >
-        {documentToReactComponents(data.fields.pageText)}
-      </div>
+      {pageComponents?.map((contentBlock: any, index: number) => (
+        <Fragment key={index}>{RenderBlock(contentBlock)}</Fragment>
+      ))}
     </>
   )
 }

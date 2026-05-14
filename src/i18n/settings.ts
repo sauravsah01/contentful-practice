@@ -1,6 +1,6 @@
-export const DEFAULT_LANGUAGE = process.env.NEXT_PUBLIC_I18N_DEFAULT_LANGUAGE || 'en-us'
+export const DEFAULT_LANGUAGE = process.env.NEXT_PUBLIC_I18N_DEFAULT_LANGUAGE || 'en-US'
 
-export const SUPPORTED_LANGUAGES = process.env.NEXT_PUBLIC_I18N_SUPPORTED_LANGUAGES?.split(',') || ['en-us', 'fr']
+export const SUPPORTED_LANGUAGES = process.env.NEXT_PUBLIC_I18N_SUPPORTED_LANGUAGES?.split(',') || ['en-US', 'fr']
 
 export const DEFAULT_NAMESPACE = process.env.NEXT_PUBLIC_I18N_DEFAULT_NS || 'translation'
 

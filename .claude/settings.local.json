@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs grep -l \"middleware\\\\|auth\\\\|seo\\\\|robots\")",
+      "Bash(Get-ChildItem -Path \"C:\\\\git\\\\contentful-practice\" -Recurse -Filter \"*i18n*\" -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object -First 20)",
+      "Bash(findstr /i middle)",
+      "Bash(dir \"C:\\\\git\\\\contentful-practice\")",
+      "Bash(findstr \"I18N\")",
+      "Bash(Get-ChildItem -Path \"C:\\\\git\\\\contentful-practice\\\\src\\\\app\" -Recurse -Name)",
+      "Bash(find /mnt/c/git/contentful-practice/src/app -type f | sort)",
+      "Bash(Get-ChildItem -Path \"C:\\\\git\\\\contentful-practice\" -Force)",
+      "Bash(Select-Object Name, FullName)",
+      "Bash(Get-ChildItem -Path \"C:\\\\git\\\\contentful-practice\\\\node_modules\" -Filter \"@ninetailed*\" -Directory)",
+      "Bash(Select-Object -ExpandProperty Name)",
+      "Bash(Get-ChildItem -Path \"C:\\\\git\\\\contentful-practice\\\\node_modules\\\\@ninetailed\" -Directory)"
+    ]
+  }
+}

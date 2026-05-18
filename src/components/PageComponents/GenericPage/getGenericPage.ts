@@ -16,6 +16,7 @@ export const getGenericPageData = cache(
       const response = await client.api.find<TypePageSkeleton>(PAGE_CONTENT_TYPE, {
         'fields.url': url,
         limit: 1,
+        include: 3,
         ...(locale && { locale }),
       })
 

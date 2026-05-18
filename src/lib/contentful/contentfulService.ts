@@ -1,10 +1,11 @@
 import Result from '@/lib/Result'
 import { createClient } from '@/lib/contentful/contentfulClient'
-import { TypeGlobalSettingsSkeleton } from '@/types'
+import { TypeGlobalAlertBanner, TypeGlobalAlertBannerSkeleton, TypeGlobalSettingsSkeleton } from '@/types'
 import { Entry } from 'contentful'
 import { cache } from 'react'
 
 const GLOBAL_SETTINGS_CONTENT_TYPE = 'globalSettings'
+const GLOBAL_ALERT_BANNER_CONTENT_TYPE = 'globalAlertBanner'
 
 export const getGlobalSettingsData = cache(
   async (locale?: string): Promise<Result<Entry<TypeGlobalSettingsSkeleton>>> => {
@@ -62,3 +63,31 @@ export const getSitemapPages = async (locale: string): Promise<Result<Entry[]>> 
     return Result.fail(`Failed to fetch pages\r\n ${JSON.stringify(error, null, 2)}`)
   }
 }
+
+export const getGlobalAlertBannerData = cache(
+  async (locale?: string): Promise<Result<TypeGlobalAlertBanner<'WITHOUT_UNRESOLVABLE_LINKS'>>> => {
+    try {
+      const client = createClient()
+      const response = await client.api.find<TypeGlobalAlertBannerSkeleton>(GLOBAL_ALERT_BANNER_CONTENT_TYPE, {
+        limit: 1,
+        include: 3,
+        ...(locale && { locale }),
+      })
+
+      if (!response || response.error) {
+        return Result.fail('getGlobalAlertBannerData: No Items Found')
+      }
+
+      if (!response.data) {
+        return Result.fail('getGlobalAlertBannerData: No entry found')
+      }
+
+      const item = response.data?.[0] as TypeGlobalAlertBanner<'WITHOUT_UNRESOLVABLE_LINKS'>
+
+      return Result.success(item)
+    } catch (err) {
+      console.error('There is an error in getGlobalAlertBannerData query:', err)
+      return Result.fail('getGlobalAlertBannerData Query failed to fetch data')
+    }
+  },
+)

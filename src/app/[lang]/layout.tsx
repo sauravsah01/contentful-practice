@@ -4,7 +4,11 @@ import { draftMode } from 'next/headers'
 import { GoogleTagManager } from '@next/third-parties/google'
 import { getGlobalSettingsData } from '@/lib/contentful/contentfulService'
 import { ContentfulPreviewProvider, ExitPreviewButton } from '@/components/Global/LivePreview'
+import PersonalizationWrapper from '@/components/Global/Personalization/PersonalizationWrapper'
 import '../globals.css'
+import TrackPage from '@/components/Global/Personalization/TrackPage'
+import Header from '@/components/Global/Header'
+import AlertBanner from '@/components/Global/AlertBanner/AlertBanner'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -37,12 +41,17 @@ export default async function RootLayout({
     <html lang={lang}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {GTM_ID && <GoogleTagManager gtmId={GTM_ID} />}
-        <main id="main">
-          <ContentfulPreviewProvider isEnabled={isEnabled} locale={lang}>
-            {children}
-          </ContentfulPreviewProvider>
-          {isEnabled && <ExitPreviewButton />}
-        </main>
+        <PersonalizationWrapper>
+          <TrackPage />
+          <main id="main">
+            <ContentfulPreviewProvider isEnabled={isEnabled} locale={lang}>
+              <AlertBanner />
+              <Header />
+              {children}
+            </ContentfulPreviewProvider>
+            {isEnabled && <ExitPreviewButton />}
+          </main>
+        </PersonalizationWrapper>
       </body>
     </html>
   )

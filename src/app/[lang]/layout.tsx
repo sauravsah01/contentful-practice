@@ -2,13 +2,19 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { draftMode } from 'next/headers'
 import { GoogleTagManager } from '@next/third-parties/google'
-import { getGlobalSettingsData } from '@/lib/contentful/contentfulService'
+import {
+  getGlobalSettingsData,
+  getNinetailedAudiences,
+  getNinetailedExperiences,
+} from '@/lib/contentful/contentfulService'
 import { ContentfulPreviewProvider, ExitPreviewButton } from '@/components/Global/LivePreview'
 import PersonalizationWrapper from '@/components/Global/Personalization/PersonalizationWrapper'
 import '../globals.css'
 import TrackPage from '@/components/Global/Personalization/TrackPage'
 import Header from '@/components/Global/Header'
 import AlertBanner from '@/components/Global/AlertBanner/AlertBanner'
+import Analytics from '@/components/Global/Personalization/Analytics'
+import Footer from '@/components/Global/Footer/Footer'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -37,17 +43,24 @@ export default async function RootLayout({
   const { data: globalSettingsData } = await getGlobalSettingsData(lang)
   const GTM_ID = (globalSettingsData?.fields?.gtmId as string) || ''
 
+  const [experiencesResult, audiencesResult] = await Promise.all([getNinetailedExperiences(), getNinetailedAudiences()])
+
+  const experiences = experiencesResult.ok ? experiencesResult.data : []
+  const audiences = audiencesResult.ok ? audiencesResult.data : []
+
   return (
     <html lang={lang}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {GTM_ID && <GoogleTagManager gtmId={GTM_ID} />}
-        <PersonalizationWrapper>
+        <PersonalizationWrapper experiences={experiences} audiences={audiences}>
+          <Analytics />
           <TrackPage />
           <main id="main">
             <ContentfulPreviewProvider isEnabled={isEnabled} locale={lang}>
               <AlertBanner />
               <Header />
               {children}
+              <Footer />
             </ContentfulPreviewProvider>
             {isEnabled && <ExitPreviewButton />}
           </main>

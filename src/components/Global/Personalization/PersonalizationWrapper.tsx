@@ -3,8 +3,19 @@
 import NinetailedInsightsPlugin from '@ninetailed/experience.js-plugin-insights'
 import { NinetailedProvider } from '@ninetailed/experience.js-react'
 import { NinetailedPreviewPlugin } from '@ninetailed/experience.js-plugin-preview'
+import NinetailedSegmentPlugin from '@ninetailed/experience.js-plugin-segment'
+import { mapNinetailedExperiences } from '@/lib/personalization/mapNinetailedExperiences'
+import { mapNinetailedAudiences } from '@/lib/personalization/mapNinetailedAudiences'
 
-const PersonalizationWrapper = ({ children }: { children: React.ReactNode }) => {
+const PersonalizationWrapper = ({
+  children,
+  experiences,
+  audiences,
+}: {
+  children: React.ReactNode
+  experiences?: any[]
+  audiences?: any[]
+}) => {
   return (
     <NinetailedProvider
       // REQUIRED. An API key uniquely identifying your Ninetailed account.
@@ -20,10 +31,11 @@ const PersonalizationWrapper = ({ children }: { children: React.ReactNode }) => 
       // Add any plugin instances
       plugins={[
         new NinetailedInsightsPlugin(),
-        // new NinetailedPreviewPlugin({
-        //   experiences: [],
-        //   audiences: [],
-        // }),
+        new NinetailedSegmentPlugin(),
+        new NinetailedPreviewPlugin({
+          experiences: mapNinetailedExperiences(experiences ?? []),
+          audiences: mapNinetailedAudiences(audiences ?? []),
+        }),
       ]}
       // Specify an amount of time (ms) that an <Experience /> component must be present in the viewport to register a component view
       componentViewTrackingThreshold={2000}

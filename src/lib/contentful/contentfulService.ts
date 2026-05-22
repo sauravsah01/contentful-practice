@@ -6,6 +6,46 @@ import { cache } from 'react'
 
 const GLOBAL_SETTINGS_CONTENT_TYPE = 'globalSettings'
 const GLOBAL_ALERT_BANNER_CONTENT_TYPE = 'globalAlertBanner'
+const NT_EXPERIENCE_CONTENT_TYPE = 'nt_experience'
+const NT_AUDIENCE_CONTENT_TYPE = 'nt_audience'
+
+export const getNinetailedExperiences = cache(async (): Promise<Result<Entry[]>> => {
+  try {
+    const client = createClient()
+    const response = await client.api.find(NT_EXPERIENCE_CONTENT_TYPE, {
+      limit: 1000,
+    })
+    if (!response || response.error) {
+      return Result.fail('getNinetailedExperiences: No Items Found')
+    }
+    if (!response.data) {
+      return Result.fail('getNinetailedExperiences: No entries found')
+    }
+    return Result.success(response.data)
+  } catch (err) {
+    console.error('There is an error in getNinetailedExperiences query:', err)
+    return Result.fail('getNinetailedExperiences Query failed to fetch data')
+  }
+})
+
+export const getNinetailedAudiences = cache(async (): Promise<Result<Entry[]>> => {
+  try {
+    const client = createClient()
+    const response = await client.api.find(NT_AUDIENCE_CONTENT_TYPE, {
+      limit: 1000,
+    })
+    if (!response || response.error) {
+      return Result.fail('getNinetailedAudiences: No Items Found')
+    }
+    if (!response.data) {
+      return Result.fail('getNinetailedAudiences: No entries found')
+    }
+    return Result.success(response.data)
+  } catch (err) {
+    console.error('There is an error in getNinetailedAudiences query:', err)
+    return Result.fail('getNinetailedAudiences Query failed to fetch data')
+  }
+})
 
 export const getGlobalSettingsData = cache(
   async (locale?: string): Promise<Result<Entry<TypeGlobalSettingsSkeleton>>> => {

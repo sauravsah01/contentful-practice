@@ -7,5 +7,7 @@ export type { TypeNt_audience, TypeNt_audienceFields, TypeNt_audienceSkeleton } 
 export type { TypeNt_experience, TypeNt_experienceFields, TypeNt_experienceSkeleton } from "./TypeNt_experience";
 export type { TypeNt_mergetag, TypeNt_mergetagFields, TypeNt_mergetagSkeleton } from "./TypeNt_mergetag";
 export type { TypePage, TypePageFields, TypePageSkeleton } from "./TypePage";
+export type { TypePromotionCard, TypePromotionCardFields, TypePromotionCardSkeleton } from "./TypePromotionCard";
+export type { TypePromotionsSection, TypePromotionsSectionFields, TypePromotionsSectionSkeleton } from "./TypePromotionsSection";
 export type { TypeRteBlock, TypeRteBlockFields, TypeRteBlockSkeleton } from "./TypeRteBlock";
 export type { TypeSeoMetadata, TypeSeoMetadataFields, TypeSeoMetadataSkeleton } from "./TypeSeoMetadata";

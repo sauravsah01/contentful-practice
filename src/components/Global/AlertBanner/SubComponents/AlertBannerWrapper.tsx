@@ -16,7 +16,7 @@ const AlertBannerWrapper = (props: AlertBannerWrapperProps) => {
   return (
     <section
       {...inspectorMode({ fieldId: 'internalName' })}
-      className="bg-teal px-3 py-3 text-center font-bold text-white sm:px-6 lg:px-8"
+      className="bg-accent px-3 py-3 text-center font-bold text-white sm:px-6 lg:px-8"
     >
       {description}
     </section>

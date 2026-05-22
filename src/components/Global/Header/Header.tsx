@@ -1,88 +1,55 @@
 import Link from '@/components/Global/Link'
 
 const NAV_LINKS = [
-  { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Services', href: '/services' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Games', href: '/games' },
+  { label: 'Live Casino', href: '/live-casino' },
+  { label: 'Sports', href: '/sports' },
+  { label: 'Promotions', href: '/promotions' },
+  { label: 'VIP', href: '/vip' },
 ]
 
-const XcentiumHotelsLogo = () => {
-  const teal = '#0a7a7a'
-  const bg = '#faf8f5'
-  const subtitleColor = '#999999'
-  const dividerColor = '#cccccc'
-
+function XCasinoLogo({ className }: { className?: string }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-      {/* X Icon */}
-      <svg
-        width="30"
-        height="40"
-        viewBox="0 0 30 40"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        role="img"
-        aria-label="Xcentium Hotels icon"
+    <svg width="200" height="60" viewBox="0 0 680 200" className={className} aria-label="XCasino" role="img">
+      {/* X icon */}
+      <g transform="translate(128, 60)">
+        <line x1="8" y1="8" x2="72" y2="72" stroke="#6b47f3" strokeWidth="20" strokeLinecap="round" />
+        <line x1="72" y1="8" x2="8" y2="72" stroke="#6b47f3" strokeWidth="20" strokeLinecap="round" />
+      </g>
+
+      {/* C icon */}
+      <g transform="translate(206, 60)">
+        <path d="M 66 14 A 30 30 0 1 0 66 66" fill="none" stroke="#6b47f3" strokeWidth="20" strokeLinecap="round" />
+      </g>
+
+      {/* asino */}
+      <text
+        x="290"
+        y="135"
+        fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        fontSize="76"
+        fontWeight="300"
+        fill="#F9FAFB"
+        letterSpacing="-3"
+        dominantBaseline="auto"
       >
-        <polygon fill={teal} points="0,0 8,0 30,40 22,40" />
-        <polygon fill={teal} points="22,0 30,0 8,40 0,40" />
-        <rect x="0" y="16" width="30" height="6" fill={bg} />
-      </svg>
-
-      {/* Vertical divider */}
-      <div
-        style={{
-          width: '0.5px',
-          height: '36px',
-          background: dividerColor,
-          flexShrink: 0,
-        }}
-      />
-
-      {/* Wordmark */}
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <span
-          style={{
-            fontSize: '18px',
-            fontWeight: 600,
-            letterSpacing: '0.16em',
-            color: teal,
-            lineHeight: 1,
-            fontFamily: 'sans-serif',
-          }}
-        >
-          XCENTIUM
-        </span>
-        <span
-          style={{
-            fontSize: '9px',
-            letterSpacing: '0.38em',
-            color: subtitleColor,
-            marginTop: '3px',
-            fontFamily: 'sans-serif',
-            fontWeight: 400,
-          }}
-        >
-          HOTELS
-        </span>
-      </div>
-    </div>
+        asino
+      </text>
+    </svg>
   )
 }
-
 function Header() {
   return (
-    <header className="w-full border-b border-gray-200 bg-white">
+    <header className="w-full border-b border-black">
       <div className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
         <Link href="/" className="text-xl font-bold tracking-tight text-gray-900">
-          <XcentiumHotelsLogo />
+          <XCasinoLogo />
         </Link>
         <nav>
           <ul className="flex gap-8">
             {NAV_LINKS.map(({ label, href }) => (
               <li key={href}>
-                <Link href={href} className="text-sm font-medium text-gray-600 transition-colors hover:text-gray-900">
+                <Link href={href} className="border-accent text-sm font-medium text-white hover:border-b-2">
                   {label}
                 </Link>
               </li>

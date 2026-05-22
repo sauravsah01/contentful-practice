@@ -5,6 +5,10 @@ export interface TypeHeroBannerFields {
     internalName: EntryFieldTypes.Symbol;
     header?: EntryFieldTypes.Symbol;
     description?: EntryFieldTypes.Symbol;
+    primaryCtaLabel?: EntryFieldTypes.Symbol;
+    primaryCtaLink?: EntryFieldTypes.Symbol;
+    secondaryCtaLabel?: EntryFieldTypes.Symbol;
+    secondaryCtaLink?: EntryFieldTypes.Symbol;
     image?: EntryFieldTypes.AssetLink;
     nt_experiences?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeNt_experienceSkeleton>>;
 }

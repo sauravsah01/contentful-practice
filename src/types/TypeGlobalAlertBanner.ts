@@ -4,6 +4,8 @@ import type { TypeNt_experienceSkeleton } from "./TypeNt_experience";
 export interface TypeGlobalAlertBannerFields {
     internalName: EntryFieldTypes.Symbol;
     description?: EntryFieldTypes.Symbol;
+    ctaLabel?: EntryFieldTypes.Symbol;
+    ctaLink?: EntryFieldTypes.Symbol;
     nt_experiences?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeNt_experienceSkeleton>>;
 }
 

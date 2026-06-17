@@ -11,7 +11,7 @@ const AlertBannerWrapper = (props: AlertBannerWrapperProps) => {
   const entryId = data.sys.id
   const inspectorMode = useContentfulInspectorMode({ entryId })
 
-  const { description } = data.fields
+  const { description, ctaLabel, ctaLink } = data.fields
 
   return (
     <section
@@ -19,6 +19,9 @@ const AlertBannerWrapper = (props: AlertBannerWrapperProps) => {
       className="bg-accent px-3 py-3 text-center font-bold text-white sm:px-6 lg:px-8"
     >
       {description}
+      <a href={ctaLink} className="ml-4 inline-block text-base font-semibold text-white underline hover:text-white/80">
+        {ctaLabel}
+      </a>
     </section>
   )
 }

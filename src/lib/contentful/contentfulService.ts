@@ -14,6 +14,7 @@ export const getNinetailedExperiences = cache(async (): Promise<Result<Entry[]>>
     const client = createClient()
     const response = await client.api.find(NT_EXPERIENCE_CONTENT_TYPE, {
       limit: 1000,
+      include: 3,
     })
     if (!response || response.error) {
       return Result.fail('getNinetailedExperiences: No Items Found')

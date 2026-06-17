@@ -8,19 +8,29 @@ export default function TrackPage() {
   const pathname = usePathname()
   const { page, identify } = useNinetailed()
 
-  useEffect(() => {
-    const userId = 'user-michael-chen'
-    const traits = {
-      playerTier: 'vip',
-      preferredGame: 'table',
-      state: 'NJ',
-      sessionCount: 150,
-      daysInactive: 0,
-    }
+  // useEffect(() => {
+  //   const userId = 'user-michael-chen'
+  //   const traits = {
+  //     playerTier: 'vip',
+  //     preferredGame: 'table',
+  //     state: 'NJ',
+  //     sessionCount: 150,
+  //     daysInactive: 0,
+  //   }
+  //   //
+  //   // const userId = 'user-john-doe'
+  //   // const traits = {
+  //   //   playerTier: 'new',
+  //   //   preferredGame: 'sports',
+  //   //   state: 'CA',
+  //   //   sessionCount: 150,
+  //   //   daysInactive: 0,
+  //   // }
 
-    analytics.identify(userId, traits)
-    identify(userId, {})
-  }, [])
+  //   analytics.identify(userId, traits)
+  //   // analytics.identify(userId)
+  //   identify(userId, {})
+  // }, [])
 
   useEffect(() => {
     void page()
